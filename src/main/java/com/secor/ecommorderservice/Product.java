@@ -1,4 +1,4 @@
-package com.secor.ecommproductservice;
+package com.secor.ecommorderservice;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "productcatalog")
 @Getter
 @Setter
 public class Product
