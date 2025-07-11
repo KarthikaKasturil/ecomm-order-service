@@ -13,14 +13,8 @@ import org.springframework.data.annotation.Id;
 @Setter
 public class Product
 {
-    @Id
-    private String productId;
-
     private String productName;
     private String description;
     private BigDecimal price;
     private String category;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

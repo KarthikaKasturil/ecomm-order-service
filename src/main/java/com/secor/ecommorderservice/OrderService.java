@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -15,18 +16,18 @@ public class OrderService
 
 
     @Autowired
-    @Qualifier("productDetailsWebClient")
-    WebClient productDetailsWebClient;
+    @Qualifier("productWebClient")
+    WebClient productWebClient;
 
     @Autowired
-    @Qualifier("checkInventoryWebClient")
-    WebClient checkInventoryWebClient;
+    @Qualifier("inventoryWebClient")
+    WebClient inventoryWebClient;
 
     public Product getProductDetails(String productId) throws WebClientResponseException
     {
         logger.info("Call product service");
 
-        return productDetailsWebClient.get()
+        return productWebClient.get()
                 .uri("/" + productId)
                 .retrieve()
                 .bodyToMono(Product.class)
@@ -37,11 +38,13 @@ public class OrderService
     {
         logger.info("Call inventory service");
 
-        return checkInventoryWebClient.get()
-                .uri("/" + productId)
+        return inventoryWebClient.get()
+                .uri("/product/" + productId)
                 .retrieve()
                 .bodyToMono(InventoryItem.class)
                 .block(); // Assuming the inventory check is valid for demonstration purposes
     }
+
+
 
 }

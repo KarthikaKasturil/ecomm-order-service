@@ -23,6 +23,7 @@ public class Order
     private Integer quantity;
 
     private LocalDateTime orderDate;
-    private String status; // INITIATED, PROCESSING, COMPLETED
+    private String status; // PENDING_PAYMENT, CONFIRMED, COMPLETED, CANCELLED
     private BigDecimal totalAmount;
+    private LocalDateTime updatedAt;
 }
