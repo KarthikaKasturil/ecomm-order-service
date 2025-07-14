@@ -20,9 +20,6 @@ public class MainRestController {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private OrderService orderService;
-
     @GetMapping
     public List<Order> getAllOrders() {
         LOG.info("getAllOrders");
@@ -41,49 +38,6 @@ public class MainRestController {
         return orderRepository.findAllByCustomerId(customerId);
     }
 
-//    @PostMapping("/create")
-//    public ResponseEntity<?> createOrder(@RequestBody Order order) {
-//        LOG.info("createOrder({})", order);
-//        LOG.info("getProductDetails({})", order.getProductId());
-//        Product product = orderService.getProductDetails(order.getProductId());
-//        if (product == null) {
-//            LOG.error("Product not found for productId: {}", order.getProductId());
-//            return ResponseEntity.status(400).body("Product not found for productId: " + order.getProductId());
-//        }
-//        else{
-//            LOG.info("Product found: {}", product);
-//            InventoryItem inventoryItem = orderService.checkInventory(order.getProductId());
-//            if (inventoryItem == null) {
-//                LOG.error("No inventory found for productId: {}", order.getProductId());
-//                return ResponseEntity.status(400).body("No inventory found for productId: " + order.getProductId());
-//            }
-//            else if (inventoryItem.getQuantity() <= 0 || inventoryItem.getQuantity() < order.getQuantity()) {
-//                LOG.error("Insufficient inventory for productId: {}", order.getProductId());
-//                return ResponseEntity.status(400).body("Insufficient inventory for productId: " + order.getProductId());
-//            }
-//            else{
-//                LOG.info("Sufficient inventory found: {}", inventoryItem);
-//                order.setOrderDate(LocalDateTime.now());
-//                order.setUpdatedAt(LocalDateTime.now());
-//                order.setStatus("PENDING_PAYMENT");
-//                BigDecimal totalAmount = product.getPrice().multiply(BigDecimal.valueOf(order.getQuantity()));
-//                order.setTotalAmount(totalAmount);
-//                LOG.info("Save Order");
-//                Order savedOrder = orderRepository.save(order);
-//                LOG.info("created order: {}", savedOrder);
-//                LOG.info("create a payment for this order");
-//                Payment payment = new Payment();
-//                payment.setOrderId(savedOrder.getOrderId());
-//                payment.setCustomerId(savedOrder.getCustomerId());
-//                payment.setPaymentMethod("ONLINE");
-//                payment.setAmount(totalAmount);
-//                ResponseEntity<?> result = orderService.createPayment(payment);
-//                LOG.info("Payment created: {}", result);
-//                return ResponseEntity.ok("Order initiated successfully and created payment");
-//            }
-//        }
-//    }
-
     @PostMapping("/save")
     public Order addOrder(@RequestBody Order order) {
         LOG.info("addOrder for orderID {}", order.getOrderId());
@@ -91,7 +45,7 @@ public class MainRestController {
     }
 
     @PutMapping("/update/status")
-    public ResponseEntity<?> updateOrderStatus(OrderStatus status) {
+    public ResponseEntity<?> updateOrderStatus(@RequestBody OrderStatus status) {
         LOG.info("updateOrderStatus({})", status);
         Order order = orderRepository.findByOrderId(status.getOrderId());
         if (order != null) {
